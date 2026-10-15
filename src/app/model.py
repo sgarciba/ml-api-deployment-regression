@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 
-from app.config import MODEL_PATH
+from app.config import MODEL_PATH, TARGET_UNIT_USD
 
 
 def load_model():
@@ -15,14 +15,10 @@ def predict(model, features: dict) -> dict:
     #         (hint: wrap the dict in a list)
     X = pd.DataFrame([features])
     
-    
-    # 3: get the predicted class and the probability of MALIGNANT
+    # 3: get the prediction (a single value, in $100,000s)
     y_pred = model.predict(X)[0]
-    y_label = "malignant" if y_pred == 0 else "benign"
-    y_prob = model.predict_proba(X)
+    y_pred_usd = round(y_pred * TARGET_UNIT_USD, -3)
 
     return {
-        "prediction": int(y_pred),     # int: 0 or 1
-        "label": y_label,          # "malignant" or "benign"
-        "probability": float(y_prob[0,0]),    # float: probability of malignant
+        "predicted_price_usd": float(y_pred_usd)
     }
