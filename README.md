@@ -1,5 +1,7 @@
 # California House Price Predictor API
 
+![CI](https://github.com/<your-username>/<repo-name>/actions/workflows/ci.yml/badge.svg)
+
 A production-style machine learning service that serves a scikit-learn regression model through a REST API built with **FastAPI**. It is tested with **pytest** and packaged with **Docker**.
 
 This service was built from my [ML service template](#using-this-as-a-template), originally created for a breast cancer classifier, which shows that the same structure can serve different model types with minimal changes.
