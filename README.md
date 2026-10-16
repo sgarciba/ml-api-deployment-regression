@@ -6,6 +6,10 @@ A production-style machine learning service that serves a scikit-learn regressio
 
 This service was built from my [ML service template](#using-this-as-a-template), originally created for a breast cancer classifier, which shows that the same structure can serve different model types with minimal changes.
 
+🚀 Live API: https://ml-api-deployment-regression.onrender.com/docs
+
+(FYI: Hosted on Render’s free tier; the first request after a period of inactivity may take up to a minute while the service wakes up.)
+
 ---
 
 ## Features
