@@ -16,7 +16,11 @@ async def lifespan(app: FastAPI):
     ml_models.clear()                         # runs at shutdown
 
 
-app = FastAPI(title="California House Price Predictor", version=MODEL_VERSION, lifespan=lifespan)
+app = FastAPI(
+    title="California House Price Predictor", 
+    version=MODEL_VERSION, 
+    lifespan=lifespan
+    )
 
 
 @app.get("/health")

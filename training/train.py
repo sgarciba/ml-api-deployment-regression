@@ -3,17 +3,22 @@ from pathlib import Path
 import joblib
 from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 MODEL_DIR = Path(__file__).resolve().parents[1] / "models"
 MODEL_PATH = MODEL_DIR / "regressor.joblib"
 
 def main():
     X, y = fetch_california_housing(return_X_y=True, as_frame=True)
-    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y, 
+        test_size=0.2, 
+        random_state=42
+    )
     
     pipeline = Pipeline([
         ("scaler", StandardScaler()),
