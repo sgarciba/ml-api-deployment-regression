@@ -9,20 +9,20 @@ from app.main import app
 def client():
     with TestClient(app) as c:
         yield c
-    
+
 
 @pytest.fixture(scope="module")
 def valid_payload():
     X, _ = fetch_california_housing(return_X_y=True, as_frame=True)
-    return X.iloc[0].to_dict() 
+    return X.iloc[0].to_dict()
 
 
 def test_health(client):
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
-    
-    
+
+
 def test_predict_valid_request(client, valid_payload):
     response = client.post("/predict", json=valid_payload)
     assert response.status_code == 200

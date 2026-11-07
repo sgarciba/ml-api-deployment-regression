@@ -18,8 +18,7 @@ def sample_house():
 def test_predict_returns_expected_keys(model, sample_house):
     result = predict(model, sample_house)
     assert set(result) == {"predicted_price_usd"}
-    
-    
+
 
 def test_price_is_positive_float(model, sample_house):
     price = predict(model, sample_house)["predicted_price_usd"]
@@ -42,5 +41,3 @@ def test_higher_income_predicts_higher_price(model, sample_house):
     base_price = predict(model, sample_house)["predicted_price_usd"]
     richer_price = predict(model, richer_area)["predicted_price_usd"]
     assert richer_price > base_price
-
-    
