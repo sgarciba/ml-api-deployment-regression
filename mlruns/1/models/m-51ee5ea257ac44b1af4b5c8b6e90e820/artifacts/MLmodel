@@ -1,0 +1,24 @@
+artifact_path: /Users/sergiogarcia/Documents/Data-Science-Projects/ml-api-deployment-regression/mlruns/1/models/m-51ee5ea257ac44b1af4b5c8b6e90e820/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.11.1
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.3.2
+    skops_trusted_types:
+    - sklearn.ensemble._hist_gradient_boosting.predictor.TreePredictor
+mlflow_version: 3.18.0
+model_id: m-51ee5ea257ac44b1af4b5c8b6e90e820
+model_size_bytes: 888363
+model_uuid: m-51ee5ea257ac44b1af4b5c8b6e90e820
+prompts: null
+run_id: 9f58b4dfa4d84066b19a8a7451fcc13b
+utc_time_created: '2026-11-07 21:36:01.658132'
