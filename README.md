@@ -51,10 +51,10 @@ This service was built from my [ML service template](#using-this-as-a-template),
 |---|---|
 | **Dataset** | California Housing (scikit-learn), 20,640 block groups, 8 features |
 | **Target** | Median house value, in units of $100,000 (capped at $500,000) |
-| **Pipeline** | `StandardScaler` → `LinearRegression` |
+| **Pipeline** | `StandardScaler` → `HistGradientBoostingRegressor` |
 | **Split** | 80/20, random |
-| **MAE** | 0.533 (≈ **$53,000** average error) |
-| **R²** | 0.576 |
+| **MAE** | 0.310 (≈ **$31,000** average error) |
+| **R²** | 0.836 |
 
 **Features:**
 
@@ -69,7 +69,6 @@ This service was built from my [ML service template](#using-this-as-a-template),
 | `Latitude` | Block group latitude |
 | `Longitude` | Block group longitude |
 
-A linear model is used deliberately to keep the focus on the serving infrastructure. Non-linear models such as gradient boosting typically reach an R² of around 0.8 on this dataset, and the pipeline design means swapping models is a one-line change.
 
 ---
 
@@ -132,8 +131,8 @@ Accepts the 8 block-group features and returns the predicted median house value 
 
 ```json
 {
-  "predicted_price_usd": 415000,
-  "model_version": "0.1.0"
+  "predicted_price_usd": 426000,
+  "model_version": "1.0.0"
 }
 ```
 
@@ -189,4 +188,35 @@ The project separates **reusable infrastructure** from **model-specific code**, 
 2. Update the model-specific files listed above.
 3. Run `python training/train.py`, then `python -m pytest -v`.
 4. Build and run the Docker image.
+
+## Experiments
+
+Model selection was tracked with **MLflow**. Each training run logs its parameters,
+metrics and model artifact, and the chosen model is versioned in the MLflow Model Registry.
+
+| Model | MAE | R² | Notes |
+|---|---|---|---|
+| Linear Regression | ~$53,300 | 0.576 | Baseline |
+| HistGradientBoosting | ~$31,000 | 0.836 | **Selected (v1.0.0)** |
+| HistGradientBoosting (tuned) | ~$30,100 | 0.843 | 2× model size |
+
+![MLflow run comparison](docs/mlflow-comparison.png)
+
+**Decision:** gradient boosting cut the average error by 42% compared with the linear
+baseline, by capturing non-linear effects such as location. The tuned variant improved MAE
+by only ~$840 (under 3%) while doubling the model size, so the simpler model was chosen.
+
+**Caveat:** models were compared on the same test set used for reporting, so the selected
+model's score may be slightly optimistic. A stricter setup would select on a validation set
+or with cross-validation and report the test score once.
+
+### Reproducing the experiment
+
+Tracking is optional, so the Docker build and CI run without MLflow installed:
+
+    pip install mlflow
+    python training/train.py --model linear --track
+    python training/train.py --model hgb --track
+    python training/train.py --model hgb_tuned --track
+    mlflow ui --port 5001
 
