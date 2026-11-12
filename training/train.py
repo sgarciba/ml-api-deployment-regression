@@ -37,7 +37,7 @@ def log_to_mlflow(pipeline, args, mae, r_square):
     import mlflow.sklearn
 
     mlflow.set_experiment("house-price")
-    
+
     with mlflow.start_run():
         mlflow.log_params(pipeline.named_steps["model"].get_params())
         mlflow.log_params(
